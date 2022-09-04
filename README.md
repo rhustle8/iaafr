@@ -1,6 +1,6 @@
 # iaafr
 
-# Improved apriori algorithm for recommendation
+# Improved apriori algorithm for recommendation systems
         import numpy as np
         import pandas as pd
         import itertools
