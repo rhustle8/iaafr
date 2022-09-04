@@ -10,7 +10,7 @@
         df['Year']=df['Year']*5
         max_membership_1=10
         for i in df.columns:
-    if len(i.split(' '))!=1:
+                if len(i.split(' '))!=1:
 
      # print(i.split(' ')[0]+i.split(' ')[1].zfill(2))
         old_column=i
@@ -22,18 +22,18 @@
     features=df.columns[1:]
     feature_combination=[]
     for i in np.arange(0,max_membership_1):
-    feature_combination=feature_combination+list(itertools.combinations(features,i+1))
+        feature_combination=feature_combination+list(itertools.combinations(features,i+1))
     print(len(feature_combination))
 
 
     df_summary=dict()
     for combination in feature_combination:
-    df_summary[combination]=df[list(combination)].min(axis=1).sum()/df.shape[0]
+        df_summary[combination]=df[list(combination)].min(axis=1).sum()/df.shape[0]
     
     df_summary_1=dict()
     for key, value in df_summary.items():
-    if value>=min_support_threshold:
-        df_summary_1[key]=value
+        if value>=min_support_threshold:
+                df_summary_1[key]=value
 
 
 # pd.set_option('display.width', 10000000)
@@ -65,7 +65,7 @@
     pd.options.display.max_colwidth = 1000
     df_support_values_
 
-# 2.List of Item Sets Above Threhold Value
+# 2. List of Item Sets above the threshold value
     df_support_values_.query('support_value_threshold_met==1').reset_index().drop('index',1)
     df_summary_2=dict()
     confidence_x_to_y=dict()
@@ -116,7 +116,7 @@
 
 
 
-#   3. Confidene values of all the itemsets (displaying only randomly sampled 25 as there are 78K combinations possible)
+#   3. Confidence values of all the itemsets (displaying only randomly sampled 25 as there are 78K combinations possible)
     pd.set_option('display.max_rows',2000)
     pd.options.display.max_colwidth = 1000
     df_confidence_values_.sample(25).reset_index().drop('index',1)
@@ -124,7 +124,7 @@
 
 
 
-#   4.List of Item Sets Above Confidence Threhold Value (displaying only randomly sampled 25 as there are 69K combinations possible)
+#   4.List of Item Sets Above Confidence Threshold Value (displaying only randomly sampled 25 as there are 69K combinations possible)
     pd.set_option('display.max_rows',2000)
     pd.options.display.max_colwidth = 1000
     df_confidence_values_.query('confidence_value_threshold_met==1').sample(25).reset_index().drop('index',1)
@@ -133,18 +133,18 @@
     # confidence_x_to_y=dict()
     lift_x_to_y=dict()
     for value1 in df_summary_1.keys():
-    for value2 in df_summary_1.keys():
-        if value1==value2:
-            pass
-        else:
+        for value2 in df_summary_1.keys():
+                if value1==value2:
+                        pass
+                else:
 
-            key_value_1=tuple(set(sorted(list(value1)+list(value2))))
-            key_value_1=tuple(sorted(key_value_1))
-            arrow_name=str(list(value1))+' -> '+str(list(value2))
-            numerator_fuzzy_intersection=df_summary[key_value_1]
-            denominator_fuzzy_intersection=df_summary[value1]
-            denominator_lift_intersection=df_summary[value2]
-            if (numerator_fuzzy_intersection/denominator_fuzzy_intersection)>=min_confidence_threshold:
+                        key_value_1=tuple(set(sorted(list(value1)+list(value2))))
+                        key_value_1=tuple(sorted(key_value_1))
+                        arrow_name=str(list(value1))+' -> '+str(list(value2))
+                        numerator_fuzzy_intersection=df_summary[key_value_1]
+                        denominator_fuzzy_intersection=df_summary[value1]
+                        denominator_lift_intersection=df_summary[value2]
+                        if (numerator_fuzzy_intersection/denominator_fuzzy_intersection)>=min_confidence_threshold:
                 lift_x_to_y[arrow_name]=numerator_fuzzy_intersection/(denominator_fuzzy_intersection*denominator_lift_intersection)
         
         
@@ -153,12 +153,12 @@
     value_list=[]
     key_name_list=[]
     for key, value in lift_x_to_y.items():    
-    key_name_list.append(key)
-    value_list.append(value)
-
+        key_name_list.append(key)
+        value_list.append(value)
+    # df_support_values_       
     df_lift_x_to_y=pd.DataFrame({'lift_item_1_to_item_2':key_name_list,'lift_value':value_list})
     df_lift_x_to_y.to_csv('lift_x_to_y.csv',index=False)
-    # df_support_values_
+   
 
 
 
